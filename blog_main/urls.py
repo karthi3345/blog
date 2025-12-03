@@ -19,9 +19,11 @@ from . import views
 from django.conf.urls.static import static
 from django.conf import settings
 from blogs import views as BlogsView
+from blogs .admin import my_admin_site
+from assignments.models import About
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path('admin/', my_admin_site.urls),
     path('', views.home, name='home'),
     path('category/', include('blogs.urls')),
     path('blogs/<slug:slug>/', BlogsView.blogs, name='blogs'),

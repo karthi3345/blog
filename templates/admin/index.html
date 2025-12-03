@@ -1,0 +1,89 @@
+{% extends "admin/base_site.html" %}
+{% load static %}
+
+{% block content %}
+<h1 style="margin-bottom:30px; color:#ff4c4c;">Dashboard</h1>
+
+<!-- Summary cards -->
+<div style="display:flex; flex-wrap: wrap; gap:20px; justify-content:flex-start;">
+
+    <!-- Blogs Card -->
+    <div style="
+        width:220px; 
+        padding:25px; 
+        border-radius:12px; 
+        background: linear-gradient(135deg,#ff4c4c,#ff7b00);
+        color:white;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        transition: transform 0.2s;
+    " onmouseover="this.style.transform='translateY(-5px)';" onmouseout="this.style.transform='translateY(0)';">
+        <h3>Total Blogs</h3>
+        <p style="font-size:28px; font-weight:bold;">{{ total_blogs }}</p>
+    </div>
+
+    <!-- Categories Card -->
+    <div style="
+        width:220px; 
+        padding:25px; 
+        border-radius:12px; 
+        background: linear-gradient(135deg,#ff7b00,#ffb400);
+        color:white;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        transition: transform 0.2s;
+    " onmouseover="this.style.transform='translateY(-5px)';" onmouseout="this.style.transform='translateY(0)';">
+        <h3>Total Categories</h3>
+        <p style="font-size:28px; font-weight:bold;">{{ total_categories }}</p>
+    </div>
+
+    <!-- Comments Card -->
+    <div style="
+        width:220px; 
+        padding:25px; 
+        border-radius:12px; 
+        background: linear-gradient(135deg,#00c6ff,#0072ff);
+        color:white;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        transition: transform 0.2s;
+    " onmouseover="this.style.transform='translateY(-5px)';" onmouseout="this.style.transform='translateY(0)';">
+        <h3>Total Comments</h3>
+        <p style="font-size:28px; font-weight:bold;">{{ total_comments }}</p>
+    </div>
+
+</div>
+
+<!-- Chart -->
+<div style="width:700px; margin-top:40px; padding:25px; border-radius:12px; background:#ffffff; box-shadow:0 4px 10px rgba(0,0,0,0.1);">
+    <h2 style="margin-bottom:20px; color:#ff4c4c;">Blog Count per Category</h2>
+    <canvas id="myChart" width="700" height="350"></canvas>
+</div>
+
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+const ctx = document.getElementById('myChart').getContext('2d');
+const myChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: {{ chart_labels|safe }},
+        datasets: [{
+            label: 'Number of Blogs',
+            data: {{ chart_data|safe }},
+            backgroundColor: [
+                '#ff4c4c','#ff7b00','#ffb400','#00c6ff','#0072ff','#00ff7f','#ff00d4'
+            ],
+            borderColor: '#333',
+            borderWidth: 1
+        }]
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            legend: { position: 'top' }
+        },
+        scales: {
+            y: { beginAtZero: true, precision:0 }
+        }
+    }
+});
+</script>
+{% endblock %}
